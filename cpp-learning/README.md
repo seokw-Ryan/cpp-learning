@@ -1,4 +1,3 @@
-# Project Code
 
 ## Description
 This repository contains code based on the Coursera course from the University of Illinois at Urbana-Champaign (UIUC).
