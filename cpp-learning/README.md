@@ -9,4 +9,4 @@ This repository contains code based on the Coursera course from the University o
 - **Platform**: Coursera
 
 ## Notes
-All the code in this folder is derived from or inspired by the lectures,
+All the code in this folder is derived from or inspired by the lectures.
