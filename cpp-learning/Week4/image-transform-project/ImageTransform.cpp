@@ -5,6 +5,7 @@
 #include "uiuc/PNG.h"
 #include "uiuc/HSLAPixel.h"
 #include "ImageTransform.h"
+#include <algorithm>
 
 /* ******************
 (Begin multi-line comment...)
@@ -67,7 +68,18 @@ PNG grayscale(PNG image) {
  * @return The image with a spotlight.
  */
 PNG createSpotlight(PNG image, int centerX, int centerY) {
+  for(unsigned x=0; x<image.width(); x++){
+    for(unsigned y=0; y<image.height(); y++){
+      HSLAPixel & p = image.getPixel(x, y);
+      unsigned dist = sqrt((x-centerX)*(x-centerX) + (y-centerY)*(y-centerY));
 
+      if(dist > 160){
+        p.l *= 0.2;
+      } else {
+        p.l *= (1-(dist*0.5)*0.01); 
+      }    
+    }
+  }
   return image;
   
 }
@@ -84,6 +96,22 @@ PNG createSpotlight(PNG image, int centerX, int centerY) {
  * @return The illinify'd image.
 **/
 PNG illinify(PNG image) {
+  for(unsigned i=0; i<image.width(); ++i){
+    for(unsigned j=0; j<image.height(); ++j){
+      HSLAPixel & p = image.getPixel(i, j);
+      int distToBlue = abs(216-p.h);
+      int distToOrange = min(abs(p.h-11), abs(360.0-p.h+11));
+      if(p.h == 359){
+        //std::cout << "distToBlue: " << distToBlue << std::endl;
+        //std::cout << "distToOrange: " << distToOrange << std::endl;
+      } 
+      if(distToBlue > distToOrange){
+        p.h = 11;
+      } else {
+        p.h = 216;
+      }
+    }
+  }
 
   return image;
 }
@@ -102,6 +130,14 @@ PNG illinify(PNG image) {
 * @return The watermarked image.
 */
 PNG watermark(PNG firstImage, PNG secondImage) {
-
+  for(unsigned y=0; y<secondImage.height(); ++y){
+    for(unsigned x=0; x<secondImage.width(); ++x){
+      HSLAPixel & p = secondImage.getPixel(x, y);
+      if(p.l == 1){
+        HSLAPixel & fp = firstImage.getPixel(x, y);
+        fp.l += 0.2;
+      }
+    }
+  }
   return firstImage;
 }
