@@ -86,6 +86,54 @@ void LinkedList<T>::insertOrdered(const T& newData) {
   // -----------------------------------------------------------
   // Please implement this function according to the description
   // above and in the instructions PDF.
+  
+
+  //creating the new node
+  Node* newNode = new Node(newData);
+  newNode->next = nullptr;
+  newNode->prev = nullptr;
+
+  //Empty list check
+  if(head_ == nullptr){
+    head_ = newNode;
+    tail_ = newNode;
+    size_++;
+    return;
+  }
+
+  //insert at the beginning
+  if(newData <= head_->data){
+    newNode->next = head_;
+    head_->prev = newNode;
+    head_ = newNode;
+    size_++;
+    return;
+  }
+
+  //Traverse to Find Insertion Point
+  Node* current = head_;
+  while (current != nullptr && current->data < newData) {
+    current = current->next;
+  }
+
+  //Insert in the Middle
+  if(current != nullptr){
+    newNode->next = current;
+    newNode->prev = current->prev;
+    current->prev->next = newNode;
+    current->prev = newNode;
+    
+  } else {
+    newNode->prev = tail_;
+    newNode->next = nullptr;
+    tail_->next = newNode;
+    tail_ = newNode;
+  }
+
+  size_++;
+
+
+
 
   // Hints:
   // Make your new node on the heap and then find where it needs to
@@ -228,6 +276,32 @@ LinkedList<T> LinkedList<T>::merge(const LinkedList<T>& other) const {
   // -----------------------------------------------------------
   // Please implement this function according to the description
   // above and in the instructions PDF.
+  
+
+  // Merge elements until one list is exhausted
+    while (!left.empty() && !right.empty()) {
+        if (left.front() <= right.front()) {
+            // Move the front element from left to merged
+            merged.pushBack(left.front());
+            left.popFront();
+        } else {
+            // Move the front element from right to merged
+            merged.pushBack(right.front());
+            right.popFront();
+        }
+    }
+
+    // Append any remaining elements from left
+    while (!left.empty()) {
+        merged.pushBack(left.front());
+        left.popFront();
+    }
+
+    // Append any remaining elements from right
+    while (!right.empty()) {
+        merged.pushBack(right.front());
+        right.popFront();
+    }
 
   // Hints:
   // 1. Assuming that the left and right lists are already sorted, remember

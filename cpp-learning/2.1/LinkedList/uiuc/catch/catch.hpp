@@ -8,6 +8,7 @@
  *  Distributed under the Boost Software License, Version 1.0. (See accompanying
  *  file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
  */
+//#define CATCH_CONFIG_NO_POSIX_SIGNALS
 #ifndef TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
 #define TWOBLUECUBES_SINGLE_INCLUDE_CATCH_HPP_INCLUDED
 // start catch.hpp
@@ -10672,7 +10673,9 @@ namespace Catch {
 
     // 32kb for the alternate stack seems to be sufficient. However, this value
     // is experimentally determined, so that's not guaranteed.
+    //const std::size_t sigStackSize = 32768 >= MINSIGSTKSZ ? 32768 : MINSIGSTKSZ;
     constexpr static std::size_t sigStackSize = 32768 >= MINSIGSTKSZ ? 32768 : MINSIGSTKSZ;
+
 
     static SignalDefs signalDefs[] = {
         { SIGINT,  "SIGINT - Terminal interrupt signal" },
@@ -10731,7 +10734,9 @@ namespace Catch {
     bool FatalConditionHandler::isSet = false;
     struct sigaction FatalConditionHandler::oldSigActions[sizeof(signalDefs)/sizeof(SignalDefs)] = {};
     stack_t FatalConditionHandler::oldSigStack = {};
-    char FatalConditionHandler::altStackMem[sigStackSize] = {};
+    //char FatalConditionHandler::altStackMem[sigStackSize] = {};
+    constexpr std::size_t fixedSigStackSize = 32768;  // Set this value manually
+    char FatalConditionHandler::altStackMem[fixedSigStackSize] = {};
 
 } // namespace Catch
 

@@ -3,6 +3,7 @@
 // Author: Eric Huber, University of Illinois staff
 // Autograder based on Zephyr test runner by Prof. Wade Fagen-Ulmschneider and the CS 225 Course Staff
 // Based on Catch2 unit testing framework
+//#define CATCH_CONFIG_NO_POSIX_SIGNALS
 
 #include <cstdlib>
 #include <stdexcept>
@@ -12,7 +13,7 @@
 #include "../LinkedList.h"
 #include "../LinkedListExercises.h"
 
-#include "../catch_amalgamated.hpp"
+#include "../uiuc/catch/catch.hpp"
 
 // May be useful in writing some tests
 template <typename T>

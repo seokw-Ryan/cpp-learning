@@ -35,10 +35,11 @@ STDLIBVERSION = $(STDLIBVERSION_CLANG)
 else
 STDLIBVERSION = $(STDLIBVERSION_GCC)
 endif
-WARNINGS = -pedantic -Wall -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable
+#WARNINGS = -pedantic -Wall -Wfatal-errors -Wextra -Wno-unused-parameter -Wno-unused-variable
+WARNINGS = -pedantic -Wall -Wextra -Wno-unused-parameter -Wno-unused-variable
 # ASANFLAGS = -fsanitize=address -fno-omit-frame-pointer
 # NO_COPY_ELISION = -fno-elide-constructors
-CXXFLAGS = $(CS400) $(STDVERSION) $(STDLIBVERSION) -g -O0 $(WARNINGS) -MMD -MP -msse2 -c $(ASANFLAGS) $(NO_COPY_ELISION)
+CXXFLAGS = $(CS400) $(STDVERSION) $(STDLIBVERSION) -g -O0 -DCATCH_CONFIG_NO_POSIX_SIGNALS $(WARNINGS) -MMD -MP -msse2 -c $(ASANFLAGS) $(NO_COPY_ELISION)
 LDFLAGS = $(CS400) $(STDVERSION) $(STDLIBVERSION) -lpthread $(ASANFLAGS) $(NO_COPY_ELISION)
 
 ifneq ($(strip $(ASANFLAGS)),)
